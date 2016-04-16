@@ -1,6 +1,7 @@
 
 COSC 686 Final Project
 ======
+This branch is for playing with vizzard. Feel free to commit here!
 
 This is the repository for the spring 2016 COSC 686 Computer Graphics final project.
 
