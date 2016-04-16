@@ -7,9 +7,11 @@ viz.setMultiSample(4)
 viz.fov(60)
 viz.go()
 
-viz.clearcolor(viz.SKYBLUE)
+#viz.clearcolor(viz.SKYBLUE)
 
-#Next, let's add the environment map. An environment map is made up of 6 textures. Each texture represents one side of a cube. This cube represents the surrounding environment of an object. This example will load the following 6 textures:
+#Next, let's add the environment map. An environment map is made up of 6
+#textures. Each texture represents one side of a cube. This cube represents
+#the surrounding environment of an object. This example will load the following 6 textures:
 # 
 #sky_posx.png 
 #sky_negx.png 
@@ -19,7 +21,10 @@ viz.clearcolor(viz.SKYBLUE)
 #sky_negz.png
 # 
 #Vizard has a shortcut for loading environment maps. So go ahead and add the following line of code to your script:
-env = viz.addEnvironmentMap('sky.jpg')
+#env = viz.addEnvironmentMap('sky.jpg')
+env = viz.addEnvironmentMap( 'R136.jpg')
+
+#env = viz.addTexture('lake3.jpg')
 
 # Add ground
 viz.addChild('ground_gray.osgb')
@@ -51,7 +56,7 @@ class moving_logo:
 
 # Make a cricle of rotating logos
 stop = 360         # Number of degrees in circle
-skip = 20		   # How often to make a logo in degrees (ex. 45 or 90)
+skip = 60          # How often to make a logo in degrees (ex. 45 or 90)
 scale_fac = 2      # Basically radius of the circle
 height_offset = 2  # How high off the "ground" for the center of the circle
 # Calculate the number of 
@@ -74,8 +79,8 @@ for deg in degrees:
 	# Make a moving_logo and append it to the list
 	# Make every other one reflect the environment (it will be shiny)
 	if shiny:
-		logos.append(moving_logo(xp, yp + height_offset, 4, viz, env))
+		logos.append(moving_logo(xp, yp + height_offset, 8, viz, env))
 		shiny = False
 	else:
-		logos.append(moving_logo(xp, yp + height_offset, 4, viz, None))
+		logos.append(moving_logo(xp, yp + height_offset, 8, viz, None))
 		shiny = True
