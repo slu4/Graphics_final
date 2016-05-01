@@ -7,21 +7,62 @@ viz.collision(viz.ON)
 viz.fov(90)
 viz.go()
 viz.phys.enable()
-mySound = viz.addAudio( 'Outset Island.mp3' ) 
+mySound = viz.addAudio('Outset Island.mp3') 
 mySound.play()
 mySound.loop( viz.ON )
+
+
+#d=viz.addChild('Woola.wrl')
+#d.setScale(.01,.01,.01)
+#d.setPosition(2,0,2)
+
 
 vizact.onkeydown( 's', mySound.stop )
 vizact.onkeydown( 'p', mySound.play ) 
 #viz.fogcolor(0.5,0.5,0.5)
 #viz.fog(1,10)
 viz.clearcolor(viz.SKYBLUE)
+
+
 ground=viz.addChild('ground_grass.osgb')
+
 ground.collidePlane()
 ground.setScale([2,2,2])
 viz.MainView.move([0,0,-12]) #change view
 #viz.MainView.setPosition([0,15,-15]) #change view
 #viz.MainView.setEuler([0,30,0]) #rotation (y,x,z)
+
+#Change environment function
+env1=viz.addEnvironmentMap('sky.jpg')
+env2=viz.addTexture('brick.jpg')
+sky = viz.addCustomNode('skydome.dlc')
+sky.texture(env2)
+
+def textu():
+	choice=env1
+	sky.texture(choice)
+	
+def textu2():
+	choice=env2
+	sky.texture(choice)
+	
+vizact.onkeydown( 'c', textu )
+vizact.onkeydown( 'd', textu2 ) 
+#Change environment function
+
+
+#env = viz.addEnvironmentMap(name)
+
+#envs = ('sky.jpg', 'R136.jpg')
+#def changeEnv(name):
+#	#idx=1
+#	#env = viz.addEnvironmentMap(envs[idx])
+#	env = viz.addEnvironmentMap(name)
+#	sky = viz.addCustomNode('skydome.dlc')
+#	sky.texture(env)
+#	#idx = (idx + 1) % 2
+#	
+#vizact.ontimer2(1, viz.PERPETUAL, changeEnv, vizact.choice(envs,vizact.LOOP))
 
 
 #pigeons = []
@@ -71,6 +112,7 @@ while num>0:
 		c=.5
 		
 #def animalMoves():
+
 
 
 
