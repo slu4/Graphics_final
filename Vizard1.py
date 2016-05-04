@@ -1,5 +1,6 @@
 import viz
 import vizact
+import vizshape
 import random
 
 viz.setMultiSample(4)
@@ -7,18 +8,21 @@ viz.collision(viz.ON)
 viz.fov(90)
 viz.go()
 viz.phys.enable()
-mySound = viz.addAudio('Outset Island.mp3') 
-mySound.play()
-mySound.loop( viz.ON )
+
+# Start Ben's Code. This is a pseudo random woods.
+for x in [-7,-5, -3, 1,3, 5,7, 9]:
+	#for z in [-9, -6, -2, 2, 6, 10]:
+	z = (23*x +13)%10
+	myTrunk = vizshape.addCylinder(height = 2.0, radius = 0.5)
+	myTrunk.setPosition([x,1.0,z])
+	myTrunk.color([0.545,0.271,0.075])
+	myLeaves = vizshape.addCone(height = 3.0, radius = 1.5)
+	myLeaves.color([0,1,0])
+	myLeaves.setPosition([x,3.5,z])
+# End Ben's Code
 
 
-#d=viz.addChild('Woola.wrl')
-#d.setScale(.01,.01,.01)
-#d.setPosition(2,0,2)
 
-
-vizact.onkeydown( 's', mySound.stop )
-vizact.onkeydown( 'p', mySound.play ) 
 #viz.fogcolor(0.5,0.5,0.5)
 #viz.fog(1,10)
 viz.clearcolor(viz.SKYBLUE)
@@ -115,39 +119,3 @@ while num>0:
 
 
 
-
-#ball=viz.addChild('ball.wrl')
-#ball.setPosition(0,0.4,-4)
-#ball.setScale(1.5,1.5,1.5)
-c=9
-s=1
-
-x=-8.5
-z=-8.5
-
-trees=[]
-for x in [-9,-7, -3, 5, 8,10]:
-    for z in [-8,-6,-4, 0, 4,6]:
-		tree = viz.addChild('plant.osgb',cache=viz.CACHE_CLONE)#make a bunch of trees 
-		tree.setPosition(x,0,z)
-		tree.setScale(2,4,2)
-		z=z+3
-
-	
-	
-#	x=x-2
-#	s=s+2
-#	z=z+s
-#	c=c-2
-	#if c==5:
-		#s==0
-		
-#	tree1 = viz.addChild('plant.osgb')
-#	tree1.setPosition(8.5,0,0)
-#	tree1.setScale(2,4,2)
-#	tree2 = viz.addChild('plant.osgb')
-#	tree2.setPosition(-8.5,0,-8.5)
-#	tree2.setScale(2,4,2)
-#	tree3 = viz.addChild('plant.osgb')
-#	tree3.setPosition(8.5,0,-8.5)
-#	tree3.setScale(2,4,2)
