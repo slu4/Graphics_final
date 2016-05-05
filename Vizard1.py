@@ -63,7 +63,7 @@ def updatelogo(choice):
 vizact.onkeydown( 'c', textu1 )
 vizact.onkeydown( 'd', textu2 ) 
 # Add ground
-#ground = vizfx.addChild('ground_gray.osgb')
+ground = vizfx.addChild('ground_gray.osgb')
 
 #Now apply the environment map texture to the dome
 sky.texture(env)
@@ -91,7 +91,7 @@ class moving_logo:
 	def update_env(self, choice):
 		print env, choice
 		self.logo.texture(choice)
-		#self.logo.appearance(choice)
+		self.logo.appearance(choice)
 		
 def makeCircle(start, stop, skip, radius, offset, z=0):
 	"""
@@ -168,7 +168,7 @@ viz.vertex(-0, 1, 0)
 plane = viz.endLayer()
 
 # Makes the sun move using a defined path.
-sunPoints = makeCircle(0, 180, 30, 10, 0, 5)
+sunPoints = makeCircle(0, 180 + 30, 20, 20, 0, 5)
 
 sunPath = viz.addAnimationPath()
 for i, points in enumerate(sunPoints):
@@ -181,7 +181,7 @@ for i, points in enumerate(sunPoints):
 
 light = vizfx.addSpotLight(euler=(0, 90, 0), color=viz.RED)
 light.position(-1, 1, 0)
-light.spread(65)
+light.spread(179)
 light.intensity(5000)
 
 link = viz.link(sunPath, sphere)
@@ -191,7 +191,8 @@ sunPath.play()
 #plane = vizshape.addPlane(size=(200,200), cullFace=False, lighting=True)
 #plane.color(viz.WHITE)
 #quad = vizshape.addQuad(size=(200, 200), axis=-vizshape.AXIS_Y, cullFace=False)
-cube = vizshape.addBox(size=(200., .5, 200.), lighting=True, color=viz.WHITE)
+#cube = vizshape.addBox(size=(200., .5, 200.), lighting=True, color=viz.WHITE)
+#cube.setPosition()
 
 sphere = vizshape.addSphere(pos=[-4, 2, 0], lighting=True, color=viz.YELLOW)
 sphere.appearance(viz.ENVIRONMENT_MAP)
@@ -247,7 +248,20 @@ z=-8.5
 trees=[]
 for x in [-9,-7, -3, 5, 8,10]:
     for z in [-8,-6,-4, 0, 4,6]:
-		tree = viz.addChild('plant.osgb',cache=viz.CACHE_CLONE)#make a bunch of trees 
-		tree.setPosition(x,0,z)
-		tree.setScale(2,4,2)
-		z=z+3
+        tree = viz.addChild('plant.osgb',cache=viz.CACHE_CLONE)#make a bunch of trees 
+        tree.setPosition(x,0,z)
+        tree.setScale(2,4,2)
+        z=z+3
+
+
+# Start Ben's Code. This is a pseudo random woods.
+for x in [-7,-5, -3, 1,3, 5,7, 9]:
+	#for z in [-9, -6, -2, 2, 6, 10]:
+	z = (23*x +13)%10
+	myTrunk = vizshape.addCylinder(height = 2.0, radius = 0.5)
+	myTrunk.setPosition([x,1.0,z])
+	myTrunk.color([0.545,0.271,0.075])
+	myLeaves = vizshape.addCone(height = 3.0, radius = 1.5)
+	myLeaves.color([0,1,0])
+	myLeaves.setPosition([x,3.5,z])
+# End Ben's Code
