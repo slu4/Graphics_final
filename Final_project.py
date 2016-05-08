@@ -1,6 +1,8 @@
 ﻿import viz
+import vizfx
 import vizcam
 import vizshape
+import vizact
 import math
 import projector
 import viztask
@@ -9,8 +11,8 @@ viz.go()
 
 # Disable the default headlight and set starting position
 viz.MainView.getHeadLight().disable()
-viz.MainView.setPosition(0,1.5,-50)
-#viz.MainView.setEuler( [0, 0, 0] )
+viz.MainView.setPosition(-18, 2,-14)  # will be linked with an avatar later
+viz.MainView.setEuler( [70, 0, 0] )
 
 #Add a model of my forest created in the inspector
 forest = viz.add('forest_2.osgb' )
@@ -238,3 +240,46 @@ vizact.onkeydown('e', viz.window.stopRecording )
 #Hit the 's' key for a screen capture. 
 #Save that files as 'image.bmp'. 
 vizact.onkeydown( 's', viz.window.screenCapture, 'image.bmp' )
+
+
+# Grab the main view.
+view = viz.MainView
+#Turn on viewpoint collision and set its distance buffer.
+viz.collision(viz.ON)
+viz.collisionbuffer( 4.5 )
+viz.MainView.collision( viz.ON )
+
+# Add avatar
+a = vizfx.addAvatar( 'vcc_male.cfg')
+a.state(1)
+aHead = a.getBone('Bip01 Head')
+
+#a.setPosition(view.getPosition()[0], view.getPosition()[1],view.getPosition()[2]+2)
+#a.setEuler(view.getEuler(viz.BODY_ORI))
+#a.setPosition([0.35,-1.2,0.2],viz.REL_LOCAL)
+
+#Link the avatar to the view.
+avLink = viz.link( view, a )
+#
+avLink.preTrans( [0, -2, 4])
+
+def onMouseDown():
+	"""Make the avatar appear to walk"""
+	a.state(2)
+	#a.setPosition(view.getPosition)
+	
+def onMouseUp(button):
+	"""Stop the avatar from walking"""
+	if button == viz.MOUSEBUTTON_LEFT:
+		a.state(1)
+		
+
+vizact.whilemousedown(viz.MOUSEBUTTON_LEFT, a.state, 2) 
+vizact.onmouseup(viz.MOUSEBUTTON_LEFT, onMouseUp, viz.MOUSEBUTTON_LEFT)
+
+
+# Enable physics
+viz.phys.enable()
+ground = forest.getChild('Plane01')
+ground.collidePlane()
+a.collideBox()
