@@ -133,6 +133,60 @@ moon.visible(False)
 moonlight.visible(False)
 
 
+
+
+
+
+#Winnie Srart: add a light
+mylight = viz.addLight() 
+mylight.enable() 
+mylight.position(0, 1, 0) 
+mylight.spread(180) 
+mylight.intensity(2)
+
+def AddLight(lightColor,quadColor,group):
+
+    light = viz.addPointLight(group=group)
+    light.color(lightColor)
+    light.linearattenuation(0.2)
+
+    LightQuad = viz.addTexQuad(parent=light, scale=[0.2]*3)
+    LightQuad.billboard()
+    LightQuad.color(quadColor)
+    LightQuad.disable(viz.LIGHTING)
+
+    return light
+
+LIGHT_SPEED = 1
+
+#Add yellow light
+light1 = AddLight([15,0,0],viz.YELLOW,5)
+light1.add(vizact.sequence(vizact.goto(-0.5,1.8,3,LIGHT_SPEED),vizact.goto(-0.5,1.8,-3,LIGHT_SPEED),viz.FOREVER))
+
+#Add yellow light
+light2 = AddLight([0,0,0.5],viz.YELLOW,0)
+light2.add(vizact.sequence(vizact.goto(0.5,1.8,-3,LIGHT_SPEED),vizact.goto(0.5,1.8,3,LIGHT_SPEED),viz.FOREVER))
+
+#Add yellow light
+light4 = AddLight([0,0.5,0],viz.YELLOW,1)
+light4.add(vizact.sequence(vizact.goto(-0.5,1.8,-3,LIGHT_SPEED),vizact.goto(-0.5,1.8,3,LIGHT_SPEED),viz.FOREVER))
+
+#Add yellow light
+light5 = AddLight([1,1,0],viz.YELLOW,1)
+light5.add(vizact.sequence(vizact.goto(0.5,1.8,3,LIGHT_SPEED),vizact.goto(0.5,1.8,-3,LIGHT_SPEED),viz.FOREVER))
+
+
+#Winnie End
+
+
+
+
+
+
+
+
+
+
 # link up the lights to objects
 viz.link(sun, sunlight)
 viz.link(moon, moonlight)
