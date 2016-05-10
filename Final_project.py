@@ -324,6 +324,97 @@ viz.vertex(3, 0.1, 0)
 myStream = viz.endLayer()
 myStream.setPosition(-15, 0.1, 0)
 
+# Dave's code again
+from vizfx.postprocess.effect import BaseShaderEffect
+
+class UnderwaterEffect(BaseShaderEffect):
+
+    def __init__(self, speed=0.0, scale=0.0, density=20.0, **kw):
+        self._speed = speed
+        self._scale = scale
+        self._density = density
+        BaseShaderEffect.__init__(self,**kw)
+
+    def _getFragmentCode(self):
+        return """
+        uniform sampler2D vizpp_InputTex;
+        uniform float osg_FrameTime;
+        uniform float speed;
+        uniform float scale;
+        uniform float density;
+        void main()
+        {
+            vec2 uv = gl_TexCoord[0].xy;
+
+            //bumpUV.y = fract(bumpUV.y - osg_FrameTime*0.1);
+            vec2 dt;
+            dt.x = sin(speed*osg_FrameTime+uv.y*density)*0.001*scale;
+            dt.y = cos(0.7+0.7*speed*osg_FrameTime+uv.x*density)*0.001*scale;
+
+            gl_FragColor = texture2D(vizpp_InputTex,uv+dt);
+        }
+        """
+
+    def _createUniforms(self):
+        self.uniforms.addFloat('speed',self._speed)
+        self.uniforms.addFloat('scale',self._scale)
+        self.uniforms.addFloat('density',self._density)
+
+    def setSpeed(self,speed):
+        self._speed = speed
+        self.uniforms.setValue('speed',speed)
+
+    def getSpeed(self):
+        return self._speed
+
+    def setScale(self,scale):
+        self._scale = scale
+        self.uniforms.setValue('scale',scale)
+
+    def getScale(self):
+        return self._scale
+
+    def setDensity(self,density):
+        self._density = density
+        self.uniforms.setValue('density',density)
+
+    def getDensity(self):
+        return self._density
+
+effect = UnderwaterEffect()
+vizfx.postprocess.addEffect(effect)
+
+myStream.collideMesh()
+
+# Create a box to track colisions
+bodyBox = viz.add('box.wrl')#,scale=[0.1,0.1,0.1])
+bodyBox.collideBox()
+bodyBox.disable(viz.DYNAMICS)
+bodyBox.enable(viz.COLLIDE_NOTIFY)
+rHandLink = viz.link( a.getBone('Bip01') , bodyBox )
+#tweak the position of the box to cover the hand
+rHandLink.preTrans([0.05,-1.0,0])
+
+# Make the box invisable
+bodyBox.disable(viz.RENDERING)
+
+
+def onCollideBegin(e):
+    if e.obj1 == bodyBox:
+        if e.obj2 == myStream:
+			print "begin"
+			effect.setScale(10.0)
+			effect.setSpeed(5.0)
+
+def onCollideEnd(e):
+    if e.obj1 == bodyBox:
+        if e.obj2 == myStream:
+			print "End"
+			effect.setScale(0.0)
+			effect.setSpeed(0.0)
+
+viz.callback(viz.COLLIDE_BEGIN_EVENT,onCollideBegin)
+viz.callback(viz.COLLIDE_END_EVENT,onCollideEnd)
 #
 #
 #Winnie Srart add a light
