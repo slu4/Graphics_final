@@ -415,80 +415,41 @@ def onCollideEnd(e):
 
 viz.callback(viz.COLLIDE_BEGIN_EVENT,onCollideBegin)
 viz.callback(viz.COLLIDE_END_EVENT,onCollideEnd)
-#
-#
-#Winnie Srart add a light
 
-#mylight = viz.addLight() 
-#mylight.enable() 
-#mylight.position(0, 1, 0) 
-#mylight.spread(180) 
-#mylight.intensity(2)
 
-#def AddLight(lightColor,quadColor,group):
-#
-#    light = viz.addPointLight(group=group)
-#    light.color(lightColor)
-#    light.linearattenuation(0.2)
-#
-#    LightQuad = viz.addTexQuad(parent=light, scale=[0.2]*3)
-#    LightQuad.billboard()
-#    LightQuad.color(quadColor)
-#    LightQuad.disable(viz.LIGHTING)
-#
-#    return light
-#
-#LIGHT_SPEED = 1
-#light_intense = 0.1
-#
-##Add red light
-#light1 = AddLight([0.5,0,0],viz.RED,5)
-#light1.intensity(light_intense)
-#light1.add(vizact.sequence(vizact.goto(-0.5,1.8,3,LIGHT_SPEED),vizact.goto(-0.5,1.8,-3,LIGHT_SPEED),viz.FOREVER))
-#
-##Add blue light
-#light2 = AddLight([0,0,0.5],viz.BLUE,0)
-#light2.intensity(light_intense)
-#light2.add(vizact.sequence(vizact.goto(0.5,1.8,-3,LIGHT_SPEED),vizact.goto(0.5,1.8,3,LIGHT_SPEED),viz.FOREVER))
-#
-##Add green light
-#light4 = AddLight([0,0.5,0],viz.GREEN,1)
-#light4.intensity(light_intense)
-#light4.add(vizact.sequence(vizact.goto(-0.5,1.8,-3,LIGHT_SPEED),vizact.goto(-0.5,1.8,3,LIGHT_SPEED),viz.FOREVER))
-#
-##Add yellow light
-#light5 = AddLight([1,1,0],viz.YELLOW,1)
-#light5.intensity(light_intense)
-#light5.add(vizact.sequence(vizact.goto(0.5,1.8,3,LIGHT_SPEED),vizact.goto(0.5,1.8,-3,LIGHT_SPEED),viz.FOREVER))
-#
-# Create spot light with texture attached 
-#stex = viz.addTexture('smiley.png')
-#light = vizfx.addSpotLight(texture=tex, color=viz.WHITE)
-
+#winnie codes, put some ducks in the river added some 
 duck = viz.add('duck.cfg')
-duck.setPosition([0,.5,4])
+duck.setPosition([-16,-0.1,7])
 duck.setEuler([180,0,0])
 
-#def getGesture():
-#    gesture = int(sensor.get()[-1])
-#    gestureText.message(gestureName[gesture])
-#
-#    if gesture == 2:
-#        #Middle finger point
-#        duck.setEuler([1,0,0],viz.REL_PARENT)
-#    if gesture == 8:
-#        #Little finger point
-#        duck.state(1)
-#    if gesture == 9:
-#        #Index and little finger point
-#        duck.state(2)
-#    if gesture == 1:
-#        #Index finger point
-#        duck.setPosition([0,.05,0], viz.REL_PARENT)
-#    if gesture == 0:
-#        #Fist
-#        duck.setPosition([0,-.05,0], viz.REL_PARENT)
-#
-#vizact.ontimer(0, getGesture)
+duck = viz.add('duck.cfg')
+duck.setPosition([-8,0.1,9])
+duck.setEuler([180,0,0])
 
-#Winnie End
+duck = viz.add('duck.cfg')
+duck.setPosition([-14,-0.1,12])
+duck.setEuler([180,0,0])
+
+pigeons = []
+for i in range(10):
+
+    #Generate random values for position and orientation
+    x = random.randint(-4,3)
+    z = random.randint(4,8)
+    yaw = random.randint(0,360)
+
+    #Load a pigeon
+    pigeon = viz.addAvatar('pigeon.cfg')
+
+    #Set position, orientation, and state
+    pigeon.setPosition([x,0,z])
+    pigeon.setEuler([yaw,0,0])
+    pigeon.state(1)
+
+    #Append the pigeon to a list of pigeons
+    pigeons.append(pigeon)
+
+pigeonClone = pigeon.clone(scale=[5]*3)
+pigeonClone.addAction(vizact.spin(0,1,0,45))
+pigeonClone.enable(viz.DEPTH_TEST,op=viz.OP_ROOT)
+
